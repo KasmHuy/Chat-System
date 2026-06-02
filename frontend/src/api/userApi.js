@@ -21,7 +21,7 @@ export function uploadAvatar(file) {
   formData.append('file', file);
   return axiosInstance
     .post('/upload/avatar', formData, {
-      headers: { 'Content-Type': undefined }  // để axios tự set multipart + boundary
+      headers: { 'Content-Type': undefined }  // Let axios set multipart + boundary automatically.
     })
     .then((res) => res.data);
 }

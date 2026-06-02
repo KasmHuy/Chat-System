@@ -47,7 +47,7 @@ export default function SearchFriendsModal({ show, onClose, currentUserId, onSta
         if (!active) return;
         console.error('[SearchFriendsModal] search error', err);
         setResults([]);
-        setError('Không thể tìm kiếm người dùng lúc này.');
+        setError('Unable to search for users right now.');
       } finally {
         if (active) {
           setLoading(false);
@@ -71,7 +71,7 @@ export default function SearchFriendsModal({ show, onClose, currentUserId, onSta
       onClose();
     } catch (err) {
       console.error('[SearchFriendsModal] create chat error', err);
-      setError(getErrorMessage(err, 'Không thể tạo cuộc trò chuyện.'));
+      setError(getErrorMessage(err, 'Unable to create the conversation.'));
     } finally {
       setChatLoading(null);
     }
@@ -84,13 +84,13 @@ export default function SearchFriendsModal({ show, onClose, currentUserId, onSta
       <div className="modal-card finder-modal">
         <div className="modal-header">
           <div>
-            <h2 className="modal-title">Tìm bạn</h2>
+            <h2 className="modal-title">Find Friends</h2>
             <p className="modal-subtitle">
-              Tìm theo username hoặc email và bắt đầu cuộc trò chuyện riêng nhanh hơn.
+              Search by username or email and start a private conversation faster.
             </p>
           </div>
-          <button className="close-btn" onClick={onClose} aria-label="Đóng">
-            ×
+          <button className="close-btn" onClick={onClose} aria-label="Close">
+            &times;
           </button>
         </div>
 
@@ -98,30 +98,30 @@ export default function SearchFriendsModal({ show, onClose, currentUserId, onSta
           <input
             type="text"
             className="search-input"
-            placeholder="Nhập tên hoặc email để tìm..."
+            placeholder="Enter a name or email to search..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
           />
-          <div className="search-panel__hint">Kết quả sẽ được lọc để không hiển thị chính bạn.</div>
+          <div className="search-panel__hint">Results are filtered so you will not see yourself.</div>
 
           {error && <div className="alert alert-danger modal-alert">{error}</div>}
 
           {loading && (
             <div className="search-panel__state">
               <div className="spinner" style={{ display: 'inline-block' }} />
-              <span>Đang tìm kiếm...</span>
+              <span>Searching...</span>
             </div>
           )}
 
           {!loading && !query.trim() && (
             <div className="search-panel__empty">
-              Nhập từ khóa để tìm bạn bè và tạo chat riêng trực tiếp từ danh sách kết quả.
+              Enter a keyword to find friends and start a private chat from the results.
             </div>
           )}
 
           {!loading && results.length === 0 && query.trim() && (
-            <div className="search-panel__empty">Không tìm thấy người dùng phù hợp.</div>
+            <div className="search-panel__empty">No matching users found.</div>
           )}
 
           {!loading && results.length > 0 && (
@@ -148,7 +148,7 @@ export default function SearchFriendsModal({ show, onClose, currentUserId, onSta
                     onClick={() => handleStartChat(user)}
                     disabled={chatLoading === user.id}
                   >
-                    {chatLoading === user.id ? 'Đang tạo...' : 'Nhắn tin'}
+                    {chatLoading === user.id ? 'Creating...' : 'Message'}
                   </button>
                 </div>
               ))}

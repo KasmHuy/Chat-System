@@ -41,7 +41,7 @@ export default function MessageInput({ onSend, disabled }) {
           ref={textareaRef}
           className="chat-textarea"
           rows={1}
-          placeholder={disabled ? 'Chọn cuộc trò chuyện...' : 'Nhập tin nhắn... (Enter để gửi)'}
+          placeholder={disabled ? 'Select a conversation...' : 'Type a message... (Enter to send)'}
           value={content}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -52,7 +52,7 @@ export default function MessageInput({ onSend, disabled }) {
           className="send-btn"
           onClick={submit}
           disabled={!content.trim() || disabled}
-          title="Gửi (Enter)"
+          title="Send (Enter)"
         >
           <SendIcon />
         </button>

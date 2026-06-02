@@ -107,7 +107,8 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(register.fulfilled, (state, action) => { // Thêm tính năng , map thêm displayName và avatarUrl        state.loading = false;
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
         state.token = action.payload.token;
         state.user = {
           id: action.payload.id,

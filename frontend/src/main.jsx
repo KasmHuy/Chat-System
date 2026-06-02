@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux'; //Bọc app bằng Provider để mọi component đều truy cập được Redux
-import { BrowserRouter } from 'react-router-dom';//Bọc app bằng BrowserRouter để dùng route URL
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './App.jsx';//Render component gốc là App
+import App from './App.jsx';
 import store from './store/index.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

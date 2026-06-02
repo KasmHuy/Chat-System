@@ -24,10 +24,10 @@ function formatTime(iso) {
   const date = new Date(iso);
   const now = new Date();
   if (date.toDateString() === now.toDateString()) {
-    return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   }
 
-  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+  return date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
 }
 
 export default function ConversationItem({ conversation, selected, onClick, currentUserId }) {
@@ -38,12 +38,6 @@ export default function ConversationItem({ conversation, selected, onClick, curr
   const color = getAvatarColor(name);
   const privateConversation = isPrivateConversation(conversation);
   const online = isConversationOnline(conversation, currentUserId);
-  console.log('[ConvItem]', {
-    conversationId: conversation.id,
-    name,
-    avatarUrl,
-    rawConversation: conversation,
-  });
 
   return (
     <button

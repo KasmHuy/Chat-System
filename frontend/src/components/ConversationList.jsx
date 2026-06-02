@@ -10,9 +10,9 @@ export default function ConversationList({
   return (
     <div className="chat-sidebar" style={{ width: '100%' }}>
       <div className="sidebar-header">
-        <span className="sidebar-header__title">Tin nhắn</span>
+        <span className="sidebar-header__title">Messages</span>
         <span style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>
-          {conversations.length > 0 ? `${conversations.length} cuộc trò chuyện` : ''}
+          {conversations.length > 0 ? `${conversations.length} conversations` : ''}
         </span>
       </div>
 
@@ -20,14 +20,14 @@ export default function ConversationList({
         {loading && (
           <div className="state-center" style={{ padding: '32px 0' }}>
             <div className="spinner" />
-            <span>Đang tải...</span>
+            <span>Loading...</span>
           </div>
         )}
 
         {!loading && conversations.length === 0 && (
           <div className="state-center" style={{ padding: '40px 16px', textAlign: 'center' }}>
             <div style={{ fontSize: 28, marginBottom: 8 }}>User</div>
-            <span>Chưa có cuộc trò chuyện nào</span>
+            <span>No conversations yet</span>
           </div>
         )}
 

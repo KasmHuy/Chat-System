@@ -3,14 +3,14 @@ import { deleteMessage, markMessageRead } from '../store/messageSlice.js';
 
 function formatTime(iso) {
   if (!iso) return '';
-  return new Date(iso).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+  return new Date(iso).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
 
 export default function MessageItem({ message, currentUserId }) {
   const dispatch = useDispatch();
   const isOwn = message.senderId === currentUserId;
   const isDeleted = message.deleted;
-  const content = isDeleted ? 'Tin nhắn đã bị xóa' : message.content;
+  const content = isDeleted ? 'This message was deleted' : message.content;
   const messageId = message.id || message.messId;
 
   const handleDelete = async () => {
@@ -19,11 +19,11 @@ export default function MessageItem({ message, currentUserId }) {
   };
 
   const statusLabel = isDeleted
-    ? 'Đã xóa'
+    ? 'Deleted'
     : isOwn
       ? message.readAt
-        ? 'Đã đọc'
-        : 'Đã gửi'
+        ? 'Read'
+        : 'Sent'
       : null;
 
   return (
@@ -43,9 +43,9 @@ export default function MessageItem({ message, currentUserId }) {
               type="button"
               className="message-action-btn"
               onClick={handleDelete}
-              aria-label="Xóa tin nhắn"
+              aria-label="Delete message"
             >
-              ×
+              &times;
             </button>
           </div>
         )}
@@ -53,7 +53,7 @@ export default function MessageItem({ message, currentUserId }) {
         <div className="message-meta">
           {statusLabel && <span className="message-status">{statusLabel}</span>}
           {message.edited && !isDeleted && (
-            <span className="message-edited">đã sửa ·</span>
+            <span className="message-edited">edited -</span>
           )}
           <span className="message-time">{formatTime(message.createdAt)}</span>
         </div>

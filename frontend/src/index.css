@@ -1,4 +1,4 @@
-/* ===== CHAT APP — DESIGN SYSTEM ===== */
+/* ===== CHAT APP - DESIGN SYSTEM ===== */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap');
 
 :root {
@@ -623,6 +623,7 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 7px 16px;
   border-radius: var(--radius-sm);

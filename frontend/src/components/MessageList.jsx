@@ -14,11 +14,11 @@ function isSameDay(a, b) {
 function formatDateLabel(iso) {
   const d = new Date(iso);
   const now = new Date();
-  if (isSameDay(iso, now)) return 'Hôm nay';
+  if (isSameDay(iso, now)) return 'Today';
   const yesterday = new Date(now);
   yesterday.setDate(now.getDate() - 1);
-  if (isSameDay(iso, yesterday)) return 'Hôm qua';
-  return d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit' });
+  if (isSameDay(iso, yesterday)) return 'Yesterday';
+  return d.toLocaleDateString('en-US', { weekday: 'long', day: '2-digit', month: '2-digit' });
 }
 
 export default function MessageList({ messages, currentUserId, loading }) {
@@ -32,7 +32,7 @@ export default function MessageList({ messages, currentUserId, loading }) {
     return (
       <div className="state-center">
         <div className="spinner" />
-        <span>Đang tải tin nhắn...</span>
+        <span>Loading messages...</span>
       </div>
     );
   }
@@ -41,13 +41,13 @@ export default function MessageList({ messages, currentUserId, loading }) {
     return (
       <div className="empty-chat">
         <div className="empty-chat__icon">💬</div>
-        <div className="empty-chat__title">Chưa có tin nhắn</div>
-        <div className="empty-chat__sub">Hãy bắt đầu cuộc trò chuyện!</div>
+        <div className="empty-chat__title">No messages yet</div>
+        <div className="empty-chat__sub">Start the conversation!</div>
       </div>
     );
   }
 
-  // Nhóm tin nhắn theo ngày để thêm date separator
+  // Group messages by day to add date separators.
   const items = [];
   let lastDate = null;
 

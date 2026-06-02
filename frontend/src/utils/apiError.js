@@ -1,4 +1,4 @@
-export function getErrorMessage(error, fallback = 'Có lỗi xảy ra. Vui lòng thử lại.') {
+export function getErrorMessage(error, fallback = 'Something went wrong. Please try again.') {
   if (typeof error === 'string' && error.trim()) {
     return error;
   }

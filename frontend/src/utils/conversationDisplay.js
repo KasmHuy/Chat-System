@@ -24,18 +24,18 @@ export function getPrivateConversationMember(conversation, currentUserId) {
 
 export function getConversationDisplayName(conversation, currentUserId) {
   if (!conversation) {
-    return 'Chọn cuộc trò chuyện';
+    return 'Select a conversation';
   }
 
   if (!isPrivateConversation(conversation)) {
-    return normalizeText(conversation.name) || 'Nhóm chat';
+    return normalizeText(conversation.name) || 'Group chat';
   }
 
   const otherMember = getPrivateConversationMember(conversation, currentUserId);
   return (
     getUserDisplayName(otherMember) ||
     normalizeText(conversation.name) ||
-    'Cuộc trò chuyện riêng'
+    'Private conversation'
   );
 }
 
@@ -46,8 +46,7 @@ export function getConversationAvatarUrl(conversation, currentUserId) {
   }
   
   const otherMember = getPrivateConversationMember(conversation, currentUserId);
-  console.log('[avatarUrl] otherMember =', JSON.stringify(otherMember, null, 2));
-  return normalizeText(otherMember?.avatarUrl); // ← trả về '' nếu không có ảnh
+  return normalizeText(otherMember?.avatarUrl);
 }
 
 export function getConversationAvatarFallback(conversation, currentUserId) {
@@ -69,12 +68,12 @@ export function getConversationStatusText(conversation, currentUserId) {
 
   if (!isPrivateConversation(conversation)) {
     const memberCount = conversation.members?.length || 0;
-    return memberCount > 0 ? `${memberCount} thành viên` : 'Nhóm chat';
+    return memberCount > 0 ? `${memberCount} members` : 'Group chat';
   }
 
   return isConversationOnline(conversation, currentUserId)
-    ? 'Đang hoạt động'
-    : 'Không hoạt động';
+    ? 'Active now'
+    : 'Inactive';
 }
 
 export function getConversationMetaText(conversation, currentUserId) {
@@ -83,12 +82,12 @@ export function getConversationMetaText(conversation, currentUserId) {
   }
 
   if (!isPrivateConversation(conversation)) {
-    return normalizeText(conversation.lastMessage) || 'Bắt đầu cuộc trò chuyện';
+    return normalizeText(conversation.lastMessage) || 'Start the conversation';
   }
 
   const otherMember = getPrivateConversationMember(conversation, currentUserId);
   const username = normalizeText(otherMember?.username);
-  return username ? `@${username}` : 'Cuộc trò chuyện riêng';
+  return username ? `@${username}` : 'Private conversation';
 }
 
 export function getConversationPreviewText(conversation, currentUserId) {
@@ -101,5 +100,5 @@ export function getConversationPreviewText(conversation, currentUserId) {
     return getConversationStatusText(conversation, currentUserId);
   }
 
-  return 'Chưa có tin nhắn';
+  return 'No messages yet';
 }

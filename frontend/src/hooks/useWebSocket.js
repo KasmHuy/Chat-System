@@ -15,7 +15,7 @@ export default function useWebSocket(conversationId, token, onMessage) {
   const subscribeConversation = (client, conversationIdToSubscribe) => {
     if (!conversationIdToSubscribe || !client) return;
 
-    // Unsubscribe cũ
+    // Unsubscribe from the previous conversation.
     if (subscriptionRef.current) {
       try {
         subscriptionRef.current.unsubscribe();
@@ -25,7 +25,7 @@ export default function useWebSocket(conversationId, token, onMessage) {
       subscriptionRef.current = null;
     }
 
-    // Chỉ subscribe khi client thực sự connected
+    // Subscribe only after the client is actually connected.
     if (!client.connected) {
       console.debug('[WebSocket] client not connected yet, skip subscribe');
       return;
@@ -51,7 +51,7 @@ export default function useWebSocket(conversationId, token, onMessage) {
     );
   };
 
-  // Effect 1: khởi tạo STOMP client khi có token
+  // Effect 1: create the STOMP client when a token exists.
   useEffect(() => {
     if (!token) {
       console.debug('[WebSocket] no token, skipping connect');
@@ -71,7 +71,7 @@ export default function useWebSocket(conversationId, token, onMessage) {
       onConnect: () => {
         console.debug('[WebSocket] connected');
         setConnected(true);
-        // Subscribe ngay khi connect xong, dùng ref để lấy conversationId hiện tại
+        // Subscribe after connecting, using the ref for the current conversation ID.
         subscribeConversation(client, conversationIdRef.current);
       },
       onStompError: (frame) => {
@@ -103,13 +103,13 @@ export default function useWebSocket(conversationId, token, onMessage) {
     };
   }, [token]);
 
-  // Ref để onConnect callback luôn thấy conversationId mới nhất
+  // Keep onConnect pointed at the latest conversation ID.
   const conversationIdRef = useRef(conversationId);
   useEffect(() => {
     conversationIdRef.current = conversationId;
   }, [conversationId]);
 
-  // Effect 2: re-subscribe khi conversationId thay đổi VÀ đã connected
+  // Effect 2: re-subscribe when the conversation ID changes and the client is connected.
   useEffect(() => {
     if (!conversationId || !connected) return;
     const client = clientRef.current;

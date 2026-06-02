@@ -100,7 +100,7 @@ export default function ChatPage() {
       dispatch(
         updateConversationLastMessage({
           conversationId: payload.conversationId,
-          content: payload.deleted ? 'Đã xóa' : payload.content,
+          content: payload.deleted ? 'Deleted' : payload.content,
           createdAt: payload.createdAt,
         })
       );
@@ -195,17 +195,17 @@ export default function ChatPage() {
 
         <div className="chat-topbar__actions">
           <button className="btn btn-outline btn-sm" onClick={() => setShowSearchModal(true)}>
-            Tìm bạn
+            Find Friends
           </button>
           <button className="btn btn-outline btn-sm" onClick={() => setShowCreateModal(true)}>
-            + Tạo nhóm
+            + Create Group
           </button>
 
           {/* Profile button */}
           <button
             type="button"
             onClick={() => navigate('/profile')}
-            title="Hồ sơ của tôi"
+            title="My Profile"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -271,7 +271,7 @@ export default function ChatPage() {
           </button>
 
           <button className="btn btn-danger btn-sm" onClick={handleLogout}>
-            Đăng xuất
+            Log Out
           </button>
         </div>
       </header>
@@ -326,7 +326,7 @@ export default function ChatPage() {
               </>
             ) : (
               <div className="chat-header__name" style={{ color: 'var(--text-tertiary)' }}>
-                Chọn một cuộc trò chuyện
+                Select a conversation
               </div>
             )}
           </div>

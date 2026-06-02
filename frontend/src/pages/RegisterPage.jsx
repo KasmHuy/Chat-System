@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [avatarMode, setAvatarMode] = useState('url'); // 'url' | 'file'
   const [fileError, setFileError] = useState('');
@@ -25,7 +26,7 @@ export default function RegisterPage() {
   }, [isAuthenticated, navigate]);
 
   const previewName = useMemo(
-    () => displayName.trim() || username.trim() || 'Tên hiển thị của bạn',
+    () => displayName.trim() || username.trim() || 'Your display name',
     [displayName, username]
   );
 
@@ -52,7 +53,7 @@ export default function RegisterPage() {
       const { url } = await uploadAvatar(file);
       setAvatarUrl(url);
     } catch {
-      setFileError('Tải ảnh lên thất bại, thử lại.');
+      setFileError('Image upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -69,9 +70,9 @@ export default function RegisterPage() {
         <div className="col-lg-6 col-xl-5">
           <div className="card shadow-sm">
             <div className="card-body p-4">
-              <h2 className="card-title mb-2">Đăng ký</h2>
+              <h2 className="card-title mb-2">Sign Up</h2>
               <p className="text-muted mb-4">
-                Tạo tài khoản với tên hiển thị riêng và avatar mặc định hoặc ảnh bạn muốn dùng.
+                Create an account with your own display name and either a default avatar or an image you choose.
               </p>
 
               {/* Avatar preview */}
@@ -80,7 +81,7 @@ export default function RegisterPage() {
                   className="register-avatar-preview"
                   style={{ cursor: 'pointer', position: 'relative' }}
                   onClick={() => fileInputRef.current?.click()}
-                  title="Nhấn để chọn ảnh"
+                  title="Click to choose an image"
                 >
                   <img src={previewAvatar} alt={previewName} onError={handleAvatarError} />
                   <div
@@ -99,14 +100,14 @@ export default function RegisterPage() {
                     }}
                     className="avatar-hover-overlay"
                   >
-                    📷
+                    Change
                   </div>
                 </div>
                 <div className="register-avatar-copy">
                   <div className="register-avatar-title">{previewName}</div>
                   <div className="register-avatar-subtitle">{previewUsername}</div>
                   <div className="register-avatar-hint">
-                    Nhấn vào ảnh để tải lên, hoặc nhập URL bên dưới.
+                    Click the image to upload one, or enter a URL below.
                   </div>
                 </div>
               </div>
@@ -117,13 +118,13 @@ export default function RegisterPage() {
 
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">Tên hiển thị</label>
+                  <label className="form-label">Display name</label>
                   <input
                     type="text"
                     className="form-control"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Ví dụ: Nguyễn Văn A"
+                    placeholder="Example: Alex Nguyen"
                     required
                   />
                 </div>
@@ -135,7 +136,7 @@ export default function RegisterPage() {
                     className="form-control"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Dùng để đăng nhập"
+                    placeholder="Used to log in"
                     required
                   />
                 </div>
@@ -153,13 +154,26 @@ export default function RegisterPage() {
 
                 <div className="mb-3">
                   <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="form-control"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      style={{ flex: 1 }}
+                      aria-label="Password"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-icon"
+                      onClick={() => setShowPassword((s) => !s)}
+                      aria-pressed={showPassword}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Avatar input: tabs for URL vs file */}
@@ -172,14 +186,14 @@ export default function RegisterPage() {
                       className={`type-option${avatarMode === 'url' ? ' selected' : ''}`}
                       onClick={() => setAvatarMode('url')}
                     >
-                      🔗 Nhập URL
+                      Use URL
                     </button>
                     <button
                       type="button"
                       className={`type-option${avatarMode === 'file' ? ' selected' : ''}`}
                       onClick={() => { setAvatarMode('file'); fileInputRef.current?.click(); }}
                     >
-                      📁 Tải file lên
+                      Upload file
                     </button>
                   </div>
 
@@ -193,7 +207,7 @@ export default function RegisterPage() {
                         placeholder="https://example.com/avatar.jpg"
                       />
                       <div className="form-text register-helper-text">
-                        Có thể bỏ qua, hệ thống sẽ dùng avatar mặc định.
+                        You can skip this and the system will use the default avatar.
                       </div>
                     </>
                   ) : (
@@ -212,10 +226,10 @@ export default function RegisterPage() {
                       onClick={() => !uploading && fileInputRef.current?.click()}
                     >
                       {uploading
-                        ? 'Đang tải lên...'
+                        ? 'Uploading...'
                         : avatarUrl
-                        ? 'Đã tải ảnh lên — nhấn để đổi'
-                        : 'Nhấn để chọn ảnh từ máy tính'}
+                        ? 'Image uploaded - click to change'
+                        : 'Click to choose an image from your computer'}
                     </div>
                       {fileError && (
                         <div className="alert alert-danger mt-2 mb-0" style={{ padding: '8px 12px', fontSize: 13 }}>
@@ -223,7 +237,7 @@ export default function RegisterPage() {
                         </div>
                       )}
                       <div className="form-text register-helper-text">
-                        JPG, PNG, GIF, WEBP — tối đa 2MB.
+                        JPG, PNG, GIF, WEBP - maximum 5MB.
                       </div>
                     </>
                   )}
@@ -241,12 +255,12 @@ export default function RegisterPage() {
                 {error && <div className="alert alert-danger">{error}</div>}
 
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                  {loading ? 'Đang tạo...' : 'Đăng ký'}
+                  {loading ? 'Creating...' : 'Sign Up'}
                 </button>
               </form>
 
               <div className="mt-3 text-center">
-                <Link to="/login">Đã có tài khoản? Đăng nhập</Link>
+                <Link to="/login">Already have an account? Log in</Link>
               </div>
             </div>
           </div>

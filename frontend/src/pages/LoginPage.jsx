@@ -9,6 +9,7 @@ export default function LoginPage() {
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,7 +28,7 @@ export default function LoginPage() {
         <div className="col-md-5">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h2 className="card-title mb-3">Đăng nhập</h2>
+              <h2 className="card-title mb-3">Log In</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Username</label>
@@ -41,21 +42,34 @@ export default function LoginPage() {
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="form-control"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      style={{ flex: 1 }}
+                      aria-label="Password"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-icon"
+                      onClick={() => setShowPassword((s) => !s)}
+                      aria-pressed={showPassword}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                  {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+                  {loading ? 'Logging in...' : 'Log In'}
                 </button>
               </form>
               <div className="mt-3 text-center">
-                <Link to="/register">Chưa có tài khoản? Đăng ký</Link>
+                <Link to="/register">Don't have an account? Sign up</Link>
               </div>
             </div>
           </div>

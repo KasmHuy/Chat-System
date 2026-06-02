@@ -56,10 +56,10 @@ export function fileToDataUrl(file, maxDimension = 256, quality = 0.82) {
 export function validateImageFile(file, maxMb = 5) {
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
   if (!allowedTypes.includes(file.type)) {
-    return 'Chỉ chấp nhận ảnh JPG, PNG, GIF hoặc WEBP.';
+    return 'Only JPG, PNG, GIF, or WEBP images are allowed.';
   }
   if (file.size > maxMb * 1024 * 1024) {
-    return `Ảnh không được vượt quá ${maxMb}MB.`;
+    return `Image size must not exceed ${maxMb}MB.`;
   }
   return null;
 }

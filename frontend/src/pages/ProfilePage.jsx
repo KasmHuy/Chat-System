@@ -7,8 +7,8 @@ import { validateImageFile } from '../utils/imageUpload.js';
 import { uploadAvatar } from '../api/userApi.js';
 
 function formatDate(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('vi-VN', {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleDateString('en-US', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -57,14 +57,14 @@ export default function ProfilePage() {
         const validationError = validateImageFile(file);
         if (validationError) { setFileError(validationError); return; }
         setFileError('');
-        setSelectedFileName(file.name); // ← thêm dòng này
+        setSelectedFileName(file.name);
         setUploading(true);
         try {
             const { url } = await uploadAvatar(file);
             setAvatarUrl(url);
         } catch {
-            setFileError('Tải ảnh lên thất bại, thử lại.');
-            setSelectedFileName(''); // ← reset nếu lỗi
+            setFileError('Image upload failed. Please try again.');
+            setSelectedFileName('');
         } finally {
             setUploading(false);
         }
@@ -89,7 +89,7 @@ export default function ProfilePage() {
     setSuccessMsg('');
 
     if (password && password !== confirmPassword) {
-      setLocalError('Mật khẩu xác nhận không khớp.');
+      setLocalError('The confirmation password does not match.');
       return;
     }
 
@@ -98,7 +98,7 @@ export default function ProfilePage() {
 
     try {
       await dispatch(updateProfile(payload)).unwrap();
-      setSuccessMsg('Cập nhật hồ sơ thành công!');
+      setSuccessMsg('Profile updated successfully!');
       setPassword('');
       setConfirmPassword('');
       setEditing(false);
@@ -137,7 +137,7 @@ export default function ProfilePage() {
           onClick={() => navigate('/chat')}
           style={{ gap: 6 }}
         >
-          ← Quay lại
+          &lt; Back
         </button>
         <span
           style={{
@@ -147,7 +147,7 @@ export default function ProfilePage() {
             letterSpacing: '-0.02em',
           }}
         >
-          Hồ sơ của tôi
+          My Profile
         </span>
       </div>
 
@@ -215,12 +215,12 @@ export default function ProfilePage() {
               {/* Info rows */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <InfoRow icon="-" label="Email" value={user.email} />
-                <InfoRow icon="-" label="Vai trò" value={user.role} />
-                <InfoRow icon="-" label="Ngày tham gia" value={formatDate(user.createdAt)} />
+                <InfoRow icon="-" label="Role" value={user.role} />
+                <InfoRow icon="-" label="Joined" value={formatDate(user.createdAt)} />
                 <InfoRow
                   icon="-"
-                  label="Trạng thái"
-                  value={user.online ? 'Đang hoạt động' : 'Không hoạt động'}
+                  label="Status"
+                  value={user.online ? 'Active now' : 'Inactive'}
                 />
               </div>
 
@@ -231,7 +231,7 @@ export default function ProfilePage() {
                   style={{ marginTop: 20, width: '100%' }}
                   onClick={() => { setEditing(true); setSuccessMsg(''); }}
                 >
-                  Chỉnh sửa hồ sơ
+                  Edit Profile
                 </button>
               )}
             </div>
@@ -249,7 +249,7 @@ export default function ProfilePage() {
                 fontSize: 13,
               }}
             >
-              ✅ {successMsg}
+              Success: {successMsg}
             </div>
           )}
 
@@ -265,7 +265,7 @@ export default function ProfilePage() {
               }}
             >
               <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 20, color: 'var(--text-primary)' }}>
-                Chỉnh sửa hồ sơ
+                Edit Profile
               </div>
 
               <form onSubmit={handleSave}>
@@ -294,7 +294,7 @@ export default function ProfilePage() {
                       position: 'relative',
                     }}
                     onClick={() => fileInputRef.current?.click()}
-                    title="Nhấn để thay ảnh"
+                    title="Click to change image"
                   >
                     <img
                       src={previewAvatar}
@@ -315,7 +315,7 @@ export default function ProfilePage() {
                   </div>
                   <style>{`.avatar-hover-overlay { } div:hover > .avatar-hover-overlay { opacity: 1 !important; }`}</style>
                   <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-                    Nhấn vào ảnh để tải lên từ máy tính.
+                    Click the image to upload one from your computer.
                   </div>
                 </div>
 
@@ -329,7 +329,7 @@ export default function ProfilePage() {
                       className={`type-option${avatarMode === 'file' ? ' selected' : ''}`}
                       onClick={() => { setAvatarMode('file'); fileInputRef.current?.click(); }}
                     >
-                      Tải file lên
+                      Upload file
                     </button>
                   </div>
 
@@ -356,7 +356,7 @@ export default function ProfilePage() {
                     onClick={() => !uploading && fileInputRef.current?.click()}
                     >
                     {uploading
-                        ? 'Đang tải lên...'
+                        ? 'Uploading...'
                         : selectedFileName
                         ? `${selectedFileName}`
                         : ''}
@@ -380,7 +380,7 @@ export default function ProfilePage() {
 
                 {/* Display name */}
                 <div className="form-group">
-                  <label className="form-label">Tên hiển thị</label>
+                  <label className="form-label">Display name</label>
                   <input
                     type="text"
                     className="form-control"
@@ -404,21 +404,21 @@ export default function ProfilePage() {
 
                 {/* Password change */}
                 <div className="form-group">
-                  <label className="form-label">Mật khẩu mới</label>
+                  <label className="form-label">New password</label>
                   <input
                     type="password"
                     className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Để trống nếu không đổi"
+                    placeholder="Leave blank to keep current password"
                     autoComplete="new-password"
                   />
-                  <div className="form-hint">Để trống nếu không muốn thay đổi mật khẩu.</div>
+                  <div className="form-hint">Leave blank if you do not want to change your password.</div>
                 </div>
 
                 {password && (
                   <div className="form-group">
-                    <label className="form-label">Xác nhận mật khẩu</label>
+                    <label className="form-label">Confirm password</label>
                     <input
                       type="password"
                       className="form-control"
@@ -447,7 +447,7 @@ export default function ProfilePage() {
                       marginBottom: 16,
                     }}
                   >
-                    ✅ {successMsg}
+                    Success: {successMsg}
                   </div>
                 )}
 
@@ -459,7 +459,7 @@ export default function ProfilePage() {
                     onClick={handleCancel}
                     disabled={updateLoading}
                   >
-                    Hủy
+                    Cancel
                   </button>
                   <button
                     type="submit"
@@ -467,7 +467,7 @@ export default function ProfilePage() {
                     style={{ flex: 1 }}
                     disabled={updateLoading}
                   >
-                    {updateLoading ? 'Đang lưu...' : 'Lưu thay đổi'}
+                    {updateLoading ? 'Saving...' : 'Save changes'}
                   </button>
                 </div>
               </form>
@@ -495,7 +495,7 @@ function InfoRow({ icon, label, value }) {
       <span style={{ fontSize: 15, flexShrink: 0 }}>{icon}</span>
       <span style={{ color: 'var(--text-tertiary)', flexShrink: 0, minWidth: 90 }}>{label}</span>
       <span style={{ color: 'var(--text-primary)', fontWeight: 500, wordBreak: 'break-all' }}>
-        {value || '—'}
+        {value || '-'}
       </span>
     </div>
   );

@@ -58,7 +58,7 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
         if (!active) return;
         console.error('[CreateConversationModal] search error', err);
         setResults([]);
-        setError('Không thể tìm kiếm người dùng để thêm vào nhóm.');
+        setError('Unable to search for users to add to the group.');
       } finally {
         if (active) {
           setSearchLoading(false);
@@ -94,12 +94,12 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
     const trimmedName = name.trim();
 
     if (!trimmedName) {
-      setError('Vui lòng nhập tên nhóm.');
+      setError('Please enter a group name.');
       return;
     }
 
     if (selectedMembers.length < 1) {
-      setError('Vui lòng chọn ít nhất một thành viên cho nhóm chat.');
+      setError('Please select at least one member for the group chat.');
       return;
     }
 
@@ -112,7 +112,7 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
       });
     } catch (err) {
       console.error('[CreateConversationModal] create error', err);
-      setError(getErrorMessage(err, 'Không thể tạo nhóm chat. Vui lòng thử lại.'));
+      setError(getErrorMessage(err, 'Unable to create the group chat. Please try again.'));
     } finally {
       setSubmitting(false);
     }
@@ -123,26 +123,26 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
       <div className="modal-card group-modal">
         <div className="modal-header">
           <div>
-            <h2 className="modal-title">Tạo nhóm chat</h2>
+            <h2 className="modal-title">Create Group Chat</h2>
             <p className="modal-subtitle">
-              Đặt tên nhóm và chọn thành viên trực tiếp, không cần nhập ID thủ công.
+              Name the group and choose members directly. No manual IDs needed.
             </p>
           </div>
-          <button className="close-btn" onClick={onClose} aria-label="Đóng">
-            ×
+          <button className="close-btn" onClick={onClose} aria-label="Close">
+            &times;
           </button>
         </div>
 
         <div className="modal-body group-builder">
           <div className="group-builder__section">
             <label htmlFor="conversation-name" className="form-label">
-              Tên nhóm
+              Group name
             </label>
             <input
               id="conversation-name"
               type="text"
               className="search-input"
-              placeholder="Ví dụ: Team dự án, Lớp học tối nay..."
+              placeholder="Example: Project team, Tonight's study group..."
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
@@ -155,28 +155,28 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
           <div className="group-builder__section">
             <div className="group-builder__section-head">
               <label htmlFor="member-search" className="form-label">
-                Thêm thành viên
+                Add members
               </label>
-              <span className="group-builder__summary">Bạn + {selectedMembers.length} thành viên</span>
+              <span className="group-builder__summary">You + {selectedMembers.length} members</span>
             </div>
             <input
               id="member-search"
               type="text"
               className="search-input"
-              placeholder="Tìm theo username hoặc email để thêm vào nhóm..."
+              placeholder="Search by username or email to add people..."
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
                 setError(null);
               }}
             />
-            <div className="search-panel__hint">Chọn ít nhất một người khác để tạo nhóm mới.</div>
+            <div className="search-panel__hint">Choose at least one other person to create a new group.</div>
           </div>
 
           {selectedMembers.length > 0 && (
             <div className="group-builder__section">
               <div className="group-builder__section-head">
-                <div className="form-label">Thành viên đã chọn</div>
+                <div className="form-label">Selected members</div>
               </div>
               <div className="selected-members">
                 {selectedMembers.map((member) => (
@@ -196,9 +196,9 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
                       type="button"
                       className="selected-member-chip__remove"
                       onClick={() => handleRemoveMember(member.id)}
-                      aria-label={`Xóa ${member.username} khỏi nhóm`}
+                      aria-label={`Remove ${member.username} from the group`}
                     >
-                      ×
+                      &times;
                     </button>
                   </div>
                 ))}
@@ -212,19 +212,19 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
             {searchLoading && (
               <div className="search-panel__state">
                 <div className="spinner" style={{ display: 'inline-block' }} />
-                <span>Đang tìm người dùng...</span>
+                <span>Searching for users...</span>
               </div>
             )}
 
             {!searchLoading && !query.trim() && (
               <div className="search-panel__empty">
-                Tìm người dùng để thêm vào nhóm. Bạn có thể thêm hoặc gỡ thành viên trước khi tạo.
+                Search for users to add to the group. You can add or remove members before creating it.
               </div>
             )}
 
             {!searchLoading && query.trim() && results.length === 0 && (
               <div className="search-panel__empty">
-                Không còn kết quả phù hợp để thêm vào nhóm.
+                No more matching results to add to the group.
               </div>
             )}
 
@@ -251,7 +251,7 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
                       className="btn btn-outline btn-sm"
                       onClick={() => handleAddMember(user)}
                     >
-                      Thêm
+                      Add
                     </button>
                   </div>
                 ))}
@@ -261,10 +261,10 @@ export default function CreateConversationModal({ show, onClose, onCreate, curre
 
           <div className="modal-footer modal-footer--flush">
             <button type="button" className="btn btn-outline btn-sm" onClick={onClose} disabled={submitting}>
-              Hủy
+              Cancel
             </button>
             <button type="button" className="btn btn-primary btn-sm" onClick={handleCreate} disabled={submitting}>
-              {submitting ? 'Đang tạo...' : 'Tạo nhóm'}
+              {submitting ? 'Creating...' : 'Create group'}
             </button>
           </div>
         </div>
