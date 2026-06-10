@@ -131,7 +131,7 @@ public class MessageServiceImpl implements MessageService{
         ensureMessageIsNotDeleted(message);
 
         User currentUser = authService.getCurrentUserEntity();
-        if (!message.getSenderId().equals(currentUser.getUserId())) {
+        if (message.getSenderId().equals(currentUser.getUserId())) {
             throw new BadRequestException("You are not the owner of this message");
         }
 
